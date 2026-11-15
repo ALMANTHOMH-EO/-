@@ -1,0 +1,31 @@
+دليل الرفع من Termux — ALMANTHOMH EO CN v1.0.0
+
+قبل الرفع:
+1) أنشئ مستودع GitHub فارغًا باسم ALMANTHOMH-EO-CN، دون README أو License أو .gitignore.
+2) للمستودع الخاص: أنشئ Fine-grained token بصلاحية Contents: Read and write للمستودع، مع Metadata: Read (الافتراضي). أو Classic token بنطاق repo.
+3) لا ترسل التوكن لأي شخص ولا تضعه في ملف أو رسالة.
+
+على الهاتف:
+1) نزّل ملف ALMANTHOMH_EO_CN_V1.0.0.zip إلى Download.
+2) افتح Termux واكتب:
+   pkg update -y
+   pkg install -y unzip git curl
+   termux-setup-storage
+3) بعد السماح بالوصول للملفات اكتب:
+   cd ~/storage/downloads
+   unzip ALMANTHOMH_EO_CN_V1.0.0.zip
+   cd ALMANTHOMH_EO_CN_V1
+   bash scripts/termux-upload.sh
+4) سيطلب بالترتيب:
+   GitHub Username
+   GitHub Token (لن يظهر أثناء الكتابة)
+   Repository name (اضغط Enter للاسم الافتراضي ALMANTHOMH-EO-CN)
+5) إذا نجح الرفع، سيطبع اسم الفرع.
+
+نشر الموقع:
+GitHub → المستودع → Settings → Pages → Build and deployment → Source: Deploy from a branch.
+اختر الفرع الذي طبعه السكربت والمجلد /docs ثم Save.
+GitHub Pages متاح للمستودعات العامة مع GitHub Free؛ المستودعات الخاصة تحتاج خطة مدعومة.
+
+السكربت لا يرفع فوق فرع main موجود؛ إذا وجد main ينشئ فرعًا جديدًا حتى لا يستبدل ملفات سابقة.
+لا يوجد APK في هذا الإصدار، ولن يظهر زر تنزيل فعّال حتى يُبنى تطبيق Android ويوقّع.

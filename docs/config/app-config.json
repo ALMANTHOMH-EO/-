@@ -1,0 +1,18 @@
+{
+  "appName": "ALMANTHOMH EO CN",
+  "brand": "ESKO",
+  "releaseVersion": "1.0.0",
+  "releaseStage": "frontend-foundation",
+  "slotsPlanned": 300,
+  "groups": 6,
+  "performanceUnitsPerSlot": 20,
+  "dailyUsageLimitHours": 6,
+  "inactiveDaysBeforeSessionLogout": 14,
+  "temporaryPairingLinkMinutes": 15,
+  "backendConfigured": false,
+  "androidCompanionBuilt": false,
+  "apkPublished": false,
+  "officialChannelUrl": "",
+  "developerContact": "",
+  "apiBaseUrl": ""
+}
