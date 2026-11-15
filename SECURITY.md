@@ -1,11 +1,27 @@
-# Security baseline — ALMANTHOMH EO CN v1.0
+# SECURITY — ALMANTHOMH EO CN V2.0.0
 
-- No GitHub token, API secret, private key, or user password belongs in this repository.
-- The public web interface is a static frontend. It does not implement shared accounts, reservations, developer bans, remote device control, or encrypted per-slot storage.
-- Remote screen access must require explicit, visible consent on the Android device for each capture session and an obvious stop control.
-- Never request broad file access as a substitute for scoped file selection.
-- Do not collect or persist a user's IP address unless a documented security need and retention period exist. Minimize and redact logs.
-- Use HTTPS/TLS for all production traffic. Use a managed key service for backend encryption keys; never store keys in GitHub Pages files.
-- A developer role may administer accounts and revoke sessions but must not expose private phone content.
-- Rate-limit login, pairing, token issuance, and recovery endpoints. Store password hashes using a modern password-hashing function, not plaintext or reversible encryption.
-- Do not treat display name, age, or an unverified phone number as proof of identity.
+## إعدادات لا تتنازل عنها
+
+- استخدم HTTPS في الإنتاج، وفعّل `COOKIE_SECURE=true`.
+- عيّن `POSTGRES_PASSWORD` و`ADMIN_BOOTSTRAP_KEY` بقيم طويلة وعشوائية وفريدة. لا ترفع ملف `.env` إلى GitHub.
+- بعد إنشاء أول مدير، احذف `ADMIN_BOOTSTRAP_KEY` من بيئة التشغيل وأعد تشغيل الخدمة.
+- لا تضع GitHub tokens أو أسرار الاستضافة في ملفات HTML أو JavaScript أو المستودع.
+- استخدم قاعدة بيانات ذات نسخ احتياطي وصلاحيات محدودة، وفعّل تشفير الأقراص لدى مزود الاستضافة.
+- اجعل الخادم والواجهة على نفس النطاق لتجنب فتح CORS غير الضروري.
+- لا تعرض واجهة الإدارة للعامة على أنها وسيلة لإثبات الهوية؛ حساب المدير يُنشأ بمفتاح تأسيس سري.
+
+## بيانات الحساب والجلسات
+
+- كلمات المرور تخزن كـ PBKDF2-HMAC-SHA256 مع salt فريد، وليست نصًا صريحًا.
+- رموز الجلسات ورموز الربط تخزن كـ SHA-256 digests.
+- Cookie الجلسة HttpOnly وSameSite=Strict؛ وفي الإنتاج Secure.
+- الطلبات المعدّلة تتطلب رمز CSRF ومراجعة Origin عند وجوده.
+- صلاحيات الحجز والإدارة تُراجع في الخادم.
+
+## الوصول إلى الهاتف
+
+لا يتضمن هذا الإصدار خدمة بث شاشة أو تحكم في Android. أي إضافة مستقبلية يجب أن تعتمد على موافقة Android الظاهرة (مثل MediaProjection) وصلاحيات المستخدم الرسمية، مع إمكانية إيقاف الجلسة فورًا. لا تستخدم Accessibility أو VPN أو أي وسيلة لتجاوز موافقة صاحب الجهاز.
+
+## الإبلاغ عن مشكلة
+
+لا ترسل كلمات مرور أو رموز جلسات أو توكنات إلى البلاغ. قدّم وصفًا للمشكلة، المسار المتأثر، والوقت التقريبي فقط.

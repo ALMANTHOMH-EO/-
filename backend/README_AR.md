@@ -1,29 +1,17 @@
-# الخدمات السحابية المطلوبة قبل التشغيل الإنتاجي
+# الخادم الخلفي V2.0.0
 
-واجهة `docs/` ثابتة وتعمل على GitHub Pages. الوظائف التالية غير مفعلة في الإصدار الأول لأنها تحتاج API وقاعدة بيانات وخدمة Android:
+الخادم موجود في `app/main.py` ويعمل باستخدام FastAPI وSQLAlchemy. قاعدة البيانات الافتراضية SQLite للتجربة ذات النسخة الواحدة، مع دعم PostgreSQL عبر `DATABASE_URL` للإنتاج.
 
-1. تسجيل الحسابات والجلسات.
-2. حجوزات ذرية للخانات الـ300 ومنع الحجز المزدوج.
-3. إصدار روابط ربط عشوائية أحادية الاستخدام بصلاحية 15 دقيقة.
-4. إدارة المستخدمين والحظر وتسجيل الإجراءات الإدارية.
-5. حد الاستخدام اليومي المشترك بين الأجهزة.
-6. مهلة الخمول 14 يومًا مع إنهاء الجلسات فقط، دون حذف بيانات الهاتف.
-7. خدمة signaling وWebRTC لعرض الشاشة بموافقة ظاهرة من مالك جهاز Android.
-8. إدارة مفاتيح منفصلة للخانات عبر KMS.
+المسارات الأساسية:
 
-## مبادئ API المقترحة
+- `GET /api/health`, `GET /api/config`
+- `POST /api/auth/register`, `POST /api/auth/login`, `POST /api/auth/logout`, `GET /api/me`
+- `GET /api/slots`, `POST /api/slots/{id}/reserve`, `DELETE /api/slots/{id}/reserve`
+- `POST /api/pairings`, `POST /api/pairings/redeem`
+- `POST /api/usage/heartbeat`
+- `POST /api/admin/bootstrap`, `GET /api/admin/overview`, `GET /api/admin/users`
+- `POST /api/admin/users/{id}/revoke-sessions`, `POST /api/admin/users/{id}/status`, `PATCH /api/admin/slots/{id}`
 
-- `GET /health`
-- `POST /v1/auth/register`
-- `POST /v1/auth/login`
-- `GET /v1/slots`
-- `POST /v1/slots/{slotId}/reserve`
-- `POST /v1/slots/{slotId}/pairing-links`
-- `POST /v1/pairing-links/redeem`
-- `POST /v1/sessions`
-- `DELETE /v1/sessions/{sessionId}`
-- `GET /v1/me/usage`
-- `GET /v1/admin/users?query=`
-- `POST /v1/admin/users/{userId}/revoke-sessions`
+كل المسارات المعدّلة تتطلب CSRF token. التحقق من المستخدم وصلاحياته يحدث على الخادم. Swagger متاح في `/api-docs`.
 
-تُحمى جميع المسارات بصلاحيات server-side، مع التحقق من ملكية الخانة وموافقة صاحب الجهاز. لا تُنفذ أفعال الإدارة من JavaScript وحده.
+رمز الربط يسجل جهازًا مقترنًا فقط. خدمة بث الشاشة والتحكم تحتاج تطبيق Android منفصلًا ولم تُنفذ بعد.

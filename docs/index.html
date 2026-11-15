@@ -2,133 +2,103 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#071c2a">
-  <meta name="description" content="ALMANTHOMH EO CN — منصة ESKO لإدارة الخانات والاتصال الآمن وتجربة الوصول عن بُعد بموافقة صاحب الجهاز.">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#061725">
+  <meta name="description" content="ALMANTHOMH EO CN — بوابة ESKO لإدارة الحسابات والخانات والجلسات بأمان.">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <title>ALMANTHOMH EO CN | ESKO</title>
-  <link rel="icon" type="image/png" href="./assets/esko-icon-512.png">
-  <link rel="apple-touch-icon" href="./assets/esko-icon-512.png">
+  <title>ALMANTHOMH EO CN · ESKO</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
-  <div class="ambient ambient-one" aria-hidden="true"></div>
-  <div class="ambient ambient-two" aria-hidden="true"></div>
-
-  <div id="offlineGate" class="offline-gate hidden" role="alert">
-    <div class="offline-card">
-      <div class="offline-symbol">⌁</div>
-      <h1>الاتصال غير متاح</h1>
-      <p>يلزم الاتصال بالموقع للتحقق من حالة الإصدار وخدمات المنظومة. راجع الإنترنت وحاول مرة أخرى.</p>
-      <button class="button primary" id="retryConnection">إعادة المحاولة</button>
-    </div>
-  </div>
-
+  <div class="sea-glow glow-a" aria-hidden="true"></div><div class="sea-glow glow-b" aria-hidden="true"></div>
   <header class="topbar">
-    <a class="brand" href="#home" aria-label="ALMANTHOMH EO الرئيسية">
-      <img src="./assets/esko-icon-512.png" alt="شعار ESKO" class="brand-logo">
-      <span><strong>ALMANTHOMH EO</strong><small>CN · ESKO DIGITAL SYSTEM</small></span>
-    </a>
-    <div class="top-status">
-      <span class="status-dot" id="connectionDot"></span>
-      <span id="connectionText">جارٍ فحص الاتصال</span>
-      <span class="version-chip">V1.0.0</span>
-    </div>
-    <button class="icon-button menu-toggle" id="menuToggle" aria-label="فتح القائمة">☰</button>
+    <a class="brand" href="#home"><span class="eagle-mark">E<span>O</span></span><span><b>ALMANTHOMH EO</b><small>CN · ESKO DIGITAL SYSTEM</small></span></a>
+    <div class="top-meta"><span id="apiState" class="state-dot pending"></span><span id="apiStateText">جاري الاتصال بالخادم</span><span class="version">V2.0.0</span></div>
+    <button id="menuButton" class="menu-button" aria-label="القائمة">☰</button>
   </header>
 
-  <main id="appShell" class="app-shell">
-    <section id="home" class="hero panel">
+  <main class="page" id="home">
+    <section class="hero glass">
       <div class="hero-copy">
-        <div class="eyebrow"><span class="eyebrow-line"></span> CONNECT · CONTROL · SECURE</div>
-        <h1>منظومة <span>ALMANTHOMH EO</span></h1>
-        <p>بوابة ESKO لإدارة الحساب والخانات، ومتابعة الاتصال، وتجهيز خدمات الوصول عن بُعد بموافقة صاحب الجهاز.</p>
-        <div class="hero-actions">
-          <a class="button primary" href="#slots">استعراض الخانات <span>←</span></a>
-          <a class="button ghost" href="#about">عن المنظومة</a>
-        </div>
-        <div class="hero-footnote"><span class="pulse"></span> واجهة الإصدار الأول · الخدمات السحابية لم تُربط بعد</div>
+        <div class="eyebrow"><i></i> CONNECT · GOVERN · PROTECT</div>
+        <h1>منظومة <em>ALMANTHOMH EO</em></h1>
+        <p>مركز إدارة الحسابات والخانات والجلسات. كل حجز وتغيير صلاحية يتم التحقق منه على الخادم، وليس بمجرد تغيير شكل الصفحة.</p>
+        <div class="hero-actions"><a class="btn primary" href="#account">ابدأ الآن <span>←</span></a><a class="btn secondary" href="#slots">مركز الخانات</a></div>
       </div>
-      <div class="hero-emblem-wrap">
-        <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
-        <img src="./assets/esko-icon-512.png" class="hero-emblem" alt="شعار النسر الرقمي ESKO">
-        <div class="emblem-tag">ESKO <b>EO</b></div>
-      </div>
-      <div class="hero-number n-one">300</div><div class="hero-number n-two">01</div>
+      <div class="hero-core" aria-label="ESKO core"><div class="ring ring-1"></div><div class="ring ring-2"></div><div class="core-mark">E<span>O</span></div><small>ESKO CORE</small></div>
+      <div class="hero-stamp">300 <small>SECURE SLOTS</small></div>
     </section>
 
-    <section class="stats-grid" aria-label="ملخص المنظومة">
-      <article class="stat-card panel"><span class="stat-icon">▦</span><div><small>الخانات المخططة</small><strong>300</strong></div></article>
-      <article class="stat-card panel"><span class="stat-icon">⬡</span><div><small>مجموعات الحماية</small><strong>06</strong></div></article>
-      <article class="stat-card panel"><span class="stat-icon">◈</span><div><small>محركات أداء الخانات</small><strong>6,000</strong></div></article>
-      <article class="stat-card panel"><span class="stat-icon">↗</span><div><small>الإصدار الحالي</small><strong>1.0.0</strong></div></article>
+    <section class="metrics" aria-label="ملخص المنظومة">
+      <article class="metric glass"><small>الخانات</small><strong>300</strong><span>6 مجموعات × 50</span></article>
+      <article class="metric glass"><small>مدة رمز الربط</small><strong>15<small>د</small></strong><span>مرة استخدام واحدة</span></article>
+      <article class="metric glass"><small>حد الاستخدام</small><strong>6<small>س</small></strong><span>يوميًا لكل حساب</span></article>
+      <article class="metric glass"><small>انتهاء الخمول</small><strong>14<small>ي</small></strong><span>إنهاء الجلسة فقط</span></article>
     </section>
 
-    <section class="section-grid">
-      <section class="panel section-card" id="account">
-        <div class="section-heading"><div><span class="section-kicker">USER AREA</span><h2>حساب المستخدم</h2></div><span class="mini-icon">◎</span></div>
-        <p class="muted">واجهة تسجيل أولية. لن تُحفظ بيانات التسجيل على خادم حتى يتم إعداد خدمة الحسابات وسياسة الخصوصية.</p>
-        <form id="previewRegistration" class="form-grid">
-          <label>الاسم المعروض<input id="displayName" name="displayName" maxlength="40" autocomplete="name" placeholder="اكتب الاسم المعروض" required></label>
-          <label>الفئة العمرية<select id="ageRange" name="ageRange" required><option value="">اختر الفئة</option><option value="under18">أقل من 18</option><option value="18plus">18 أو أكثر</option></select></label>
-          <label class="full-width">رقم الهاتف (اختياري)<input id="phoneOptional" name="phone" inputmode="tel" autocomplete="tel" maxlength="24" placeholder="اختياري — غير موثّق في هذا الإصدار"></label>
-          <button class="button secondary full-width" type="submit">معاينة بيانات التسجيل</button>
+    <section class="content-grid" id="account">
+      <article class="glass panel auth-panel" id="authPanel">
+        <div class="panel-heading"><div><span class="kicker">SECURE IDENTITY</span><h2>الدخول إلى المنظومة</h2></div><span class="panel-icon">◉</span></div>
+        <div class="switcher"><button id="showLogin" class="selected" type="button">تسجيل الدخول</button><button id="showRegister" type="button">إنشاء حساب</button></div>
+        <form id="loginForm" class="form-stack">
+          <label>اسم المستخدم<input id="loginUsername" name="username" autocomplete="username" minlength="3" maxlength="24" required placeholder="username"></label>
+          <label>كلمة المرور<input id="loginPassword" name="password" type="password" autocomplete="current-password" required placeholder="كلمة المرور"></label>
+          <button class="btn primary full" type="submit">دخول آمن</button>
         </form>
-        <p id="registrationNotice" class="form-notice" aria-live="polite">وضع المعاينة فقط: لن يتم إنشاء حساب أو إرسال البيانات.</p>
-      </section>
+        <form id="registerForm" class="form-stack hidden">
+          <label>اسم المستخدم<input id="regUsername" name="username" autocomplete="username" minlength="3" maxlength="24" pattern="[A-Za-z0-9][A-Za-z0-9_.-]{2,23}" required placeholder="حروف إنجليزية وأرقام"></label>
+          <label>الاسم المعروض<input id="regName" name="display_name" maxlength="40" required placeholder="الاسم الذي سيظهر داخل الحساب"></label>
+          <label>الفئة العمرية<select id="regAge" name="age_band" required><option value="">اختر الفئة</option><option value="under18">أقل من 18 سنة</option><option value="18plus">18 سنة أو أكثر</option></select></label>
+          <label>كلمة المرور<input id="regPassword" name="password" type="password" minlength="12" maxlength="128" autocomplete="new-password" required placeholder="12 حرفًا على الأقل"></label>
+          <button class="btn primary full" type="submit">إنشاء الحساب</button>
+          <p class="hint">لا نطلب رقم هاتف أو بيانات حساسة غير لازمة. اختر كلمة مرور قوية ولا تشاركها.</p>
+        </form>
+        <p id="authMessage" class="message" role="status"></p>
+      </article>
 
-      <section class="panel section-card" id="services">
-        <div class="section-heading"><div><span class="section-kicker">SERVICE STATUS</span><h2>حالة الخدمات</h2></div><span class="mini-icon">⌁</span></div>
-        <div class="service-list">
-          <div class="service-row"><span><i class="tiny-dot ok"></i> واجهة الموقع</span><b class="pill ok-pill">متاحة</b></div>
-          <div class="service-row"><span><i class="tiny-dot pending"></i> تسجيل الحسابات السحابي</span><b class="pill pending-pill">غير مربوط</b></div>
-          <div class="service-row"><span><i class="tiny-dot pending"></i> الحجز المشترك للخانات</span><b class="pill pending-pill">غير مربوط</b></div>
-          <div class="service-row"><span><i class="tiny-dot pending"></i> التحكم عن بُعد</span><b class="pill pending-pill">غير جاهز</b></div>
-          <div class="service-row"><span><i class="tiny-dot pending"></i> تنزيل APK</span><b class="pill pending-pill">لم يُبنَ</b></div>
-        </div>
-        <div class="notice-box"><strong>تنبيه الإصدار الأول</strong><p>هذه النسخة واجهة منشورة قابلة للتثبيت كـ PWA بعد تفعيل GitHub Pages. الحجز الحقيقي والتحكم بالهاتف يحتاجان خدمة سحابية وتطبيق Android مرافقًا.</p></div>
-      </section>
+      <article class="glass panel profile-panel hidden" id="profilePanel">
+        <div class="panel-heading"><div><span class="kicker">ACCOUNT CONTROL</span><h2>لوحة حسابك</h2></div><span class="user-avatar">EO</span></div>
+        <div class="profile-main"><div><small>مرحبًا</small><h3 id="profileName">—</h3><p id="profileHandle">@—</p></div><span id="roleBadge" class="role-badge">USER</span></div>
+        <div class="profile-stats"><div><small>الخانة المحجوزة</small><b id="mySlot">لا يوجد</b></div><div><small>استهلاك اليوم</small><b id="myUsage">0 / 6 ساعات</b></div></div>
+        <div id="accountAlert" class="alert hidden"></div>
+        <div class="profile-actions"><button id="refreshAccount" class="btn secondary" type="button">تحديث البيانات</button><button id="logoutButton" class="btn danger" type="button">تسجيل الخروج</button></div>
+        <div class="pair-box"><h3>ربط جهاز بخانتك</h3><p>أنشئ رمزًا مؤقتًا أحادي الاستخدام. الرمز لا يفتح شاشة الهاتف ولا يمنح تحكمًا بذاته.</p><button id="createPairing" class="btn primary" type="button" disabled>إنشاء رمز ربط</button><div id="pairingResult" class="pair-result hidden"></div></div>
+      </article>
     </section>
 
-    <section id="slots" class="panel slots-panel">
-      <div class="section-heading slots-heading"><div><span class="section-kicker">SIX SECURITY GROUPS</span><h2>مركز الخانات · 300</h2><p class="muted">ست مجموعات، 50 خانة لكل مجموعة.</p></div><span class="slot-count">300 <small>SLOTS</small></span></div>
-      <div class="group-tabs" id="groupTabs" role="tablist" aria-label="مجموعات الخانات"></div>
-      <div class="slot-toolbar"><span id="groupLabel">المجموعة الأولى · 001–050</span><span class="pill pending-pill">بانتظار ربط خدمة الحجز</span></div>
-      <div id="slotGrid" class="slot-grid" aria-live="polite"></div>
-      <p class="muted small-note">أرقام الخانات هنا تعريفات ثابتة فقط. لا يمكن حجزها أو اعتبارها متاحة فعليًا قبل ربط قاعدة بيانات مشتركة تمنع الحجز المزدوج.</p>
+    <section class="glass panel slots-panel" id="slots">
+      <div class="panel-heading slots-head"><div><span class="kicker">SIX SECURITY GROUPS</span><h2>مركز الخانات · 300</h2><p class="subtle">الحالة يتم جلبها من قاعدة البيانات. الحجز متاح بعد تسجيل الدخول.</p></div><span class="slot-total">300 <small>SLOTS</small></span></div>
+      <div id="groupTabs" class="group-tabs" role="tablist" aria-label="مجموعات الخانات"></div>
+      <div class="slot-toolbar"><b id="groupLabel">المجموعة 1 · 001–050</b><span id="slotHint">سجّل الدخول لإدارة حجزك</span></div>
+      <div id="slotGrid" class="slot-grid"><div class="loading">جاري تحميل الخانات…</div></div>
+      <div class="legend"><span><i class="free"></i> متاحة</span><span><i class="taken"></i> محجوزة</span><span><i class="mine"></i> حجزك</span><span><i class="off"></i> موقوفة</span></div>
     </section>
 
-    <section class="quick-grid" aria-label="روابط ومعلومات">
-      <article class="quick-card panel" id="about"><div class="quick-icon">◇</div><h3>وصف المنظومة</h3><p>واجهة ESKO لإدارة الربط والخانات وتجهيز خدمات الوصول الآمن.</p><button class="text-action" data-dialog="aboutDialog">عرض الوصف ←</button></article>
-      <article class="quick-card panel" id="guide"><div class="quick-icon">▤</div><h3>شرح الاستخدام</h3><p>تعرف على مراحل التسجيل والربط وإدارة الجلسات.</p><button class="text-action" data-dialog="guideDialog">فتح دليل الاستخدام ←</button></article>
-      <article class="quick-card panel"><div class="quick-icon">▷</div><h3>القناة الرسمية</h3><p>سيتم تفعيل الزر بعد إضافة رابط القناة الصحيح.</p><button class="text-action disabled-action" disabled>الرابط غير مضاف</button></article>
-      <article class="quick-card panel"><div class="quick-icon">✆</div><h3>الاتصال بالمطور</h3><p>لن يتم عرض رقم غير مؤكد أو بيانات اتصال تجريبية.</p><button class="text-action disabled-action" disabled>الرقم غير مضاف</button></article>
+    <section class="content-grid lower-grid">
+      <article class="glass panel services-panel"><div class="panel-heading"><div><span class="kicker">SYSTEM SERVICES</span><h2>حالة الخدمات</h2></div><span class="panel-icon">⌁</span></div>
+        <div class="service-row"><span>خدمة الحسابات والجلسات</span><b class="service-live">● تعمل</b></div>
+        <div class="service-row"><span>قاعدة البيانات والخانات</span><b class="service-live" id="dbState">● قيد الفحص</b></div>
+        <div class="service-row"><span>الحماية من تزوير الطلبات</span><b class="service-live">● مفعّلة</b></div>
+        <div class="service-row"><span>روابط الربط المؤقتة</span><b class="service-live">● 15 دقيقة</b></div>
+        <div class="service-row"><span>تطبيق Android وبث الشاشة</span><b class="service-pending">● غير متاح بعد</b></div>
+      </article>
+      <article class="glass panel rules-panel"><div class="panel-heading"><div><span class="kicker">SESSION GOVERNOR</span><h2>قواعد الاستخدام</h2></div><span class="panel-icon">⬡</span></div>
+        <ul><li>حد الاستخدام اليومي 6 ساعات للحساب.</li><li>ينتهي تسجيل الدخول بعد 14 يومًا بلا نشاط.</li><li>تنبيه قبل انتهاء الخمول في اليوم 10 ثم 13.</li><li>إنهاء الجلسة لا يحذف ملفات أو بيانات الهاتف.</li><li>رمز الربط ينتهي بعد 15 دقيقة ويُستخدم مرة واحدة.</li></ul>
+      </article>
     </section>
 
-    <section class="download-panel panel" id="download">
-      <div class="download-mark"><img src="./assets/esko-icon-512.png" alt="أيقونة ESKO"></div>
-      <div class="download-copy"><span class="section-kicker">APP DOWNLOAD CENTER</span><h2>تطبيق ESKO لنظام Android</h2><p>ملف APK لم يتم بناؤه بعد. زر التنزيل سيُفعّل عند إصدار تطبيق Android وتوقيعه ونشره رسميًا.</p></div>
-      <button class="button download-button" disabled><span>↓</span> تنزيل التطبيق — قريبًا</button>
+    <section id="adminPanel" class="glass panel admin-panel hidden">
+      <div class="panel-heading"><div><span class="kicker">EO MASTER GOVERNOR</span><h2>غرفة المطور</h2></div><span class="admin-badge">ADMIN</span></div>
+      <div class="admin-overview" id="adminOverview"></div>
+      <form id="adminSearchForm" class="admin-search"><input id="adminQuery" placeholder="ابحث باسم المستخدم أو الاسم المعروض"><button class="btn secondary" type="submit">بحث</button></form>
+      <div id="adminUsers" class="admin-users"></div>
+      <p class="hint">كل إجراء إداري يُسجّل في سجل التدقيق داخل قاعدة البيانات.</p>
     </section>
 
-    <footer class="footer panel">
-      <div class="footer-brand"><img src="./assets/esko-icon-512.png" alt=""><span><b>ALMANTHOMH EO CN</b><small>ESKO DIGITAL SYSTEM</small></span></div>
-      <p>أمان · أداء · اتصال مسؤول</p>
-      <small>© <span id="year"></span> ALMANTHOMH EO · إصدار الواجهة 1.0.0</small>
-    </footer>
+    <footer class="footer glass"><div class="footer-brand"><span class="eagle-mark">E<span>O</span></span><b>ALMANTHOMH EO CN</b></div><p>ESKO · أمان مسؤول · إدارة واضحة</p><small>V2.0.0 · خادم الحسابات والخانات</small></footer>
   </main>
-
-  <nav class="bottom-nav" aria-label="التنقل الرئيسي">
-    <a href="#home" class="active"><span>⌂</span><small>الرئيسية</small></a>
-    <a href="#slots"><span>▦</span><small>الخانات</small></a>
-    <a href="#services"><span>⌁</span><small>الخدمات</small></a>
-    <a href="#download"><span>↓</span><small>التنزيل</small></a>
-  </nav>
-
-  <dialog id="aboutDialog" class="info-dialog"><form method="dialog"><button class="close-dialog" aria-label="إغلاق">×</button></form><span class="section-kicker">ABOUT ALMANTHOMH EO</span><h2>عن المنظومة</h2><p>ALMANTHOMH EO CN مشروع واجهة رقمية لإدارة حسابات وخانات اتصال، مع تخطيط لخدمات سحابية وتطبيق Android مرافق. الإصدار الحالي يقدم الهوية البصرية وواجهة الاستعراض فقط؛ لا يدّعي تشغيل حجز مركزي أو تحكم فعلي بالهاتف.</p></dialog>
-  <dialog id="guideDialog" class="info-dialog"><form method="dialog"><button class="close-dialog" aria-label="إغلاق">×</button></form><span class="section-kicker">QUICK GUIDE</span><h2>شرح الاستخدام</h2><ol><li>افتح الموقع مع اتصال بالإنترنت.</li><li>استعرض مجموعات الخانات وأرقامها.</li><li>انتظر تفعيل خدمة الحسابات والحجز قبل إدخال بيانات حقيقية.</li><li>لن يبدأ التحكم عن بُعد إلا من تطبيق Android وبموافقة صريحة من صاحب الجهاز.</li><li>رابط القناة ورقم المطور وملف APK ستضاف بعد تأكيد بياناتها وإصدارها.</li></ol></dialog>
-
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="./assets/app.js" defer></script>
 </body>
 </html>

@@ -1,8 +1,7 @@
 .env
-.env.*
-*.pem
-*.key
-*.p12
-*.pfx
-secrets/
-*.token
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+data/
+*.db
