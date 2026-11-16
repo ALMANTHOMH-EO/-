@@ -1,0 +1,89 @@
+name: Build ALMANTHOMH EO CN Android APK from sealed source
+on:
+  push:
+    branches: [main]
+    paths:
+      - "vault/**"
+      - "eo_vault_runtime.py"
+      - "vault_bootstrap.py"
+      - "scripts/eo_vault.py"
+      - ".github/workflows/android-apk.yml"
+      - "scripts/termux-upload-sealed.sh"
+      - "termux-eo.sh"
+      - "Dockerfile"
+      - "docker-compose*.yml"
+      - "requirements.txt"
+      - ".env.example"
+      - "deploy/**"
+      - "README_AR.md"
+      - "DEPLOY_AR.md"
+      - "SECURITY.md"
+      - "BUILD_STATUS_AR.md"
+      - "RELEASE_NOTES_AR.md"
+      - "TERMUX_UPDATE_AR.md"
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+      - name: Install Android SDK components
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - name: Verify and decrypt signed Android source
+        env:
+          EO_MASTER_KEY: ${{ secrets.EO_MASTER_KEY }}
+        run: |
+          if [ -z "$EO_MASTER_KEY" ]; then
+            echo "EO_MASTER_KEY repository secret is required to decrypt the Android source." >&2
+            exit 1
+          fi
+          python -m pip install "cryptography>=42,<47"
+          python scripts/eo_vault.py verify
+          python scripts/eo_vault.py open --master-key-env EO_MASTER_KEY --destination "$RUNNER_TEMP/eo-source"
+      - name: Build debug APK
+        run: gradle --no-daemon -p "$RUNNER_TEMP/eo-source/android" :app:assembleDebug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ALMANTHOMH-EO-CN-Android-5.0.0-debug
+          path: ${{ runner.temp }}/eo-source/android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
+      - name: Prepare release signing (optional)
+        id: signing
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [ -z "$ANDROID_KEYSTORE_BASE64" ] || [ -z "$ANDROID_KEYSTORE_PASSWORD" ] || [ -z "$ANDROID_KEY_ALIAS" ] || [ -z "$ANDROID_KEY_PASSWORD" ]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Release signing secrets are not configured; only the debug artifact will be produced."
+            exit 0
+          fi
+          KEYSTORE_PATH="$RUNNER_TEMP/eo-upload-key.jks"
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE_PATH"
+          chmod 600 "$KEYSTORE_PATH"
+          echo "ANDROID_KEYSTORE_PATH=$KEYSTORE_PATH" >> "$GITHUB_ENV"
+          echo "ANDROID_KEYSTORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD" >> "$GITHUB_ENV"
+          echo "ANDROID_KEY_ALIAS=$ANDROID_KEY_ALIAS" >> "$GITHUB_ENV"
+          echo "ANDROID_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+      - name: Build minified signed release APK
+        if: steps.signing.outputs.ready == 'true'
+        run: gradle --no-daemon -p "$RUNNER_TEMP/eo-source/android" :app:assembleRelease
+      - uses: actions/upload-artifact@v4
+        if: steps.signing.outputs.ready == 'true'
+        with:
+          name: ALMANTHOMH-EO-CN-Android-5.0.0-release-signed
+          path: ${{ runner.temp }}/eo-source/android/app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
+          retention-days: 30

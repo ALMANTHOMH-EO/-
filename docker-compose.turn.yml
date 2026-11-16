@@ -1,0 +1,23 @@
+# Optional TURN relay for networks where direct WebRTC/STUN cannot connect.
+# Configure TURN_URLS, TURN_SHARED_SECRET, TURN_REALM and TURN_EXTERNAL_IP in .env first.
+services:
+  turn:
+    profiles: ["turn"]
+    image: coturn/coturn:4.6.2
+    restart: unless-stopped
+    # Host networking avoids Docker NAT breaking the advertised public TURN relay IP.
+    # Intended for a Linux VPS with the listed ports allowed by its firewall.
+    network_mode: host
+    command:
+      - -n
+      - --log-file=stdout
+      - --fingerprint
+      - --use-auth-secret
+      - --static-auth-secret=${TURN_SHARED_SECRET:?Set TURN_SHARED_SECRET in .env}
+      - --realm=${TURN_REALM:-eo-cn.example}
+      - --external-ip=${TURN_EXTERNAL_IP:?Set TURN_EXTERNAL_IP to this server public IPv4}
+      - --listening-port=3478
+      - --min-port=49160
+      - --max-port=51160
+      - --no-cli
+      - --no-multicast-peers

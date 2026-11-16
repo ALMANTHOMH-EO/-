@@ -21,9 +21,30 @@ services:
         condition: service_healthy
     environment:
       DATABASE_URL: postgresql+psycopg://almanthomheo:${POSTGRES_PASSWORD}@db:5432/almanthomheo
-      COOKIE_SECURE: "false"
+      COOKIE_SECURE: ${COOKIE_SECURE:-true}
       ADMIN_BOOTSTRAP_KEY: ${ADMIN_BOOTSTRAP_KEY:?Set ADMIN_BOOTSTRAP_KEY in .env}
+      USER_ACCESS_CODE_HASH: ${USER_ACCESS_CODE_HASH:-32d0812d9741f3542b0f2eba898868d8bff97877f9db2994a0a1f4073f9e62a9}
+      DEVELOPER_ACCESS_CODE_HASH: ${DEVELOPER_ACCESS_CODE_HASH:-}
+      EMERGENCY_VAULT_CODE_HASH: ${EMERGENCY_VAULT_CODE_HASH:-}
+      TOTP_ENCRYPTION_KEY: ${TOTP_ENCRYPTION_KEY:?Set TOTP_ENCRYPTION_KEY in .env}
+      EO_MASTER_KEY: ${EO_MASTER_KEY:?Set EO_MASTER_KEY in .env}
+      EO_VAULT_DIR: /srv/alm/vault
+      EO_VAULT_RUNTIME_DIR: /run/eo-runtime
+      TURN_URLS: ${TURN_URLS:-}
+      TURN_SHARED_SECRET: ${TURN_SHARED_SECRET:-}
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /run/eo-runtime:rw,noexec,nosuid,size=512m,uid=10001,gid=10001,mode=0700
+      - /tmp:rw,noexec,nosuid,size=64m,uid=10001,gid=10001,mode=0700
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=4).read()"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 volumes:
   postgres_data:

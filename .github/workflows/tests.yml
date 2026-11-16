@@ -1,17 +1,88 @@
-name: ALMANTHOMH EO CN checks
+name: ALMANTHOMH EO CN sealed-source checks
 on:
   push:
     branches: [main]
+    paths:
+      - "vault/**"
+      - "eo_vault_runtime.py"
+      - "vault_bootstrap.py"
+      - "scripts/eo_vault.py"
+      - ".github/workflows/**"
+      - "scripts/termux-upload-sealed.sh"
+      - "termux-eo.sh"
+      - "Dockerfile"
+      - "docker-compose*.yml"
+      - "requirements.txt"
+      - ".env.example"
+      - "deploy/**"
+      - "README_AR.md"
+      - "DEPLOY_AR.md"
+      - "SECURITY.md"
+      - "BUILD_STATUS_AR.md"
+      - "RELEASE_NOTES_AR.md"
+      - "TERMUX_UPDATE_AR.md"
   pull_request:
     branches: [main]
+  workflow_dispatch:
 jobs:
   test:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install -r requirements-dev.txt
-      - run: python -m py_compile app/main.py scripts/bootstrap_admin.py
-      - run: pytest -q
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install minimal vault verifier
+        run: python -m pip install "cryptography>=42,<47"
+      - name: Verify and decrypt signed EO VAULT source
+        env:
+          EO_MASTER_KEY: ${{ secrets.EO_MASTER_KEY }}
+        run: |
+          if [ -z "$EO_MASTER_KEY" ]; then
+            echo "EO_MASTER_KEY repository secret is required to verify and test the protected source." >&2
+            exit 1
+          fi
+          python scripts/eo_vault.py verify
+          python scripts/eo_vault.py open --master-key-env EO_MASTER_KEY --destination "$RUNNER_TEMP/eo-source"
+      - name: Install source test dependencies
+        run: python -m pip install -r "$RUNNER_TEMP/eo-source/requirements-dev.txt"
+      - name: Python compile and integration tests
+        run: |
+          cd "$RUNNER_TEMP/eo-source"
+          python -m py_compile app/main.py scripts/bootstrap_admin.py scripts/eo_vault.py eo_vault_runtime.py vault_bootstrap.py
+          pytest -q
+      - name: Frontend JavaScript syntax
+        run: |
+          cd "$RUNNER_TEMP/eo-source"
+          node --check docs/assets/app.js
+          node --check docs/assets/v5.js
+          node --check docs/assets/workspace.js
+          node --check docs/sw.js
+      - name: Shell scripts syntax
+        run: |
+          cd "$RUNNER_TEMP/eo-source"
+          for file in scripts/*.sh; do bash -n "$file"; done
+          python -m py_compile app/main.py scripts/*.py eo_vault_runtime.py vault_bootstrap.py
+      - name: Project JSON, YAML, and Android XML resources
+        run: |
+          cd "$RUNNER_TEMP/eo-source"
+          python - <<'PY'
+          import json
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+          import yaml
+          root = Path('.')
+          json.loads((root/'docs/manifest.webmanifest').read_text(encoding='utf-8'))
+          for path in root.joinpath('android').rglob('*.xml'):
+              ET.parse(path)
+          for path in list(root.rglob('*.yml')) + list(root.rglob('*.yaml')):
+              yaml.safe_load(path.read_text(encoding='utf-8'))
+          for path in (root/'docker-compose.yml', root/'docker-compose.turn.yml'):
+              yaml.safe_load(path.read_text(encoding='utf-8'))
+          print('JSON/YAML/XML checks passed')
+          PY

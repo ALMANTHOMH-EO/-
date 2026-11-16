@@ -5,3 +5,21 @@ __pycache__/
 .pytest_cache/
 data/
 *.db
+
+# Android / Gradle generated files
+android/.gradle/
+android/local.properties
+android/**/build/
+
+# Local database backups contain private account/device records.
+backups/
+
+# EO VAULT developer-only keys and plaintext working directories
+.eo-vault-keys/
+*.masterkey
+*SIGNING_PRIVATE*.pem
+
+# Termux credentials and developer plaintext/key material
+.termux-credentials
+.termux-keys
+ALMANTHOMH_EO_CN_SOURCE_V5/

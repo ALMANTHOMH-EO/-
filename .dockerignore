@@ -1,0 +1,30 @@
+# Never include local secrets or state in a Docker build context.
+.env
+.env.*
+!.env.example
+.git
+.venv
+__pycache__
+*.py[cod]
+.pytest_cache
+data/
+android/.gradle/
+android/**/build/
+
+backups/
+*.dump
+*.sql
+
+# Never ship developer private keys or plaintext worktrees in the Docker context.
+.eo-vault-keys/
+*.masterkey
+*SIGNING_PRIVATE*.pem
+
+# The Docker production image must receive encrypted payload only.
+app/
+docs/
+android/
+scripts/
+tests/
+deploy/
+.github/

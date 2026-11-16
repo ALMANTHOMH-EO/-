@@ -1,0 +1,5 @@
+# Example for Caddy installed on the host machine. Replace the domain.
+example.com {
+    encode zstd gzip
+    reverse_proxy 127.0.0.1:8000
+}
